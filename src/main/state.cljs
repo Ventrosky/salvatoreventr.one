@@ -131,7 +131,7 @@
                               :title "oop-projects"
                               :desc "Java and Visual Basic projects."}}))
 
-(def certificate (r/atom {:libs {:date "2019 August"
+(def certificate (r/atom {:apis {:date "2019 August"
                                  :title "APIs and Microservices"
                                  :link "https://www.freecodecamp.org/certification/ventrosky/apis-and-microservices"
                                  :source "FreeCodeCamp"}

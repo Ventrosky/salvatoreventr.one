@@ -2,6 +2,9 @@
   "name": "salvatoreventr.one",
   "version": "0.0.1",
   "private": true,
+  "scripts":{
+    "shadow": "shadow-cljs watch app"
+  },
   "devDependencies": {
     "shadow-cljs": "2.8.39"
   },

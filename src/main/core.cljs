@@ -8,7 +8,16 @@
             [main.components.portfolio :refer [portfolio]]
             [main.components.contacts :refer [contacts]]
             [main.components.footer :refer [footer]]
-            [main.state :as state]))
+            [main.state :as state]
+            [ajax.core :refer [GET]]))
+
+(defn fetch-link! [data]
+  (GET "http://localhost:8055/events?name=Ventrosky"
+    {:handler #(do
+                 (js/console.log %)
+                 (reset! data %))
+     :error-handler (fn [{:keys [status status-text]}]
+                      (js/console.log status status-text))}))
 
 (defn app
   []
@@ -25,8 +34,13 @@
    [contacts]
    [footer]])
 
-(defn ^:export main
+(defn ^:dev/after-load start
   []
   (r/render
-    [app]
-    (.getElementById js/document "app")))
+   [app]
+   (.getElementById js/document "app")))
+
+(defn ^:export main
+  []
+  ;(fetch-link! state/data)
+  (start))

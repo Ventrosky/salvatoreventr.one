@@ -155,3 +155,5 @@
                                  :title "Front End Development"
                                  :link "https://www.freecodecamp.org/ventrosky/front-end-certification"
                                  :source "FreeCodeCamp"}}))
+
+(def data (r/atom {}))

@@ -8,11 +8,12 @@
             [main.components.portfolio :refer [portfolio]]
             [main.components.contacts :refer [contacts]]
             [main.components.footer :refer [footer]]
+            [main.components.treemap :refer [treemap append-svg]]
             [main.state :as state]
             [ajax.core :refer [GET]]))
 
 (defn fetch-link! [data]
-  (GET "http://localhost:8055/events?name=Ventrosky"
+  (GET "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_dendrogram_full.json";"http://localhost:8055/events?name=Ventrosky"
     {:handler #(do
                  (js/console.log %)
                  (reset! data %))
@@ -31,6 +32,7 @@
    [certificates]
    [experience "Community Service" 4 (vals @state/extra)]
    [portfolio]
+   [treemap]
    [contacts]
    [footer]])
 
@@ -43,4 +45,5 @@
 (defn ^:export main
   []
   ;(fetch-link! state/data)
-  (start))
+  (start)
+  (append-svg))

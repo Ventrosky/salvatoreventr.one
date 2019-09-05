@@ -2,7 +2,7 @@
   "name": "salvatoreventr.one",
   "version": "0.0.1",
   "private": true,
-  "scripts":{
+  "scripts": {
     "shadow": "shadow-cljs watch app"
   },
   "devDependencies": {
@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "create-react-class": "^15.6.3",
+    "d3": "^5.11.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   }

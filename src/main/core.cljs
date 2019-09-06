@@ -9,17 +9,8 @@
             [main.components.contacts :refer [contacts]]
             [main.components.footer :refer [footer]]
             [main.components.treemap :refer [treemap append-svg]]
-            [main.state :as state]
-            [ajax.core :refer [GET]]))
-
-(defn fetch-link! [data]
-  (GET "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_dendrogram_full.json";"http://localhost:8055/events?name=Ventrosky"
-    {:handler #(do
-                 (js/console.log %)
-                 (reset! data %))
-     :error-handler (fn [{:keys [status status-text]}]
-                      (js/console.log status status-text))}))
-
+            [main.state :as state]))
+            
 (defn app
   []
   [:div
@@ -44,6 +35,5 @@
 
 (defn ^:export main
   []
-  ;(fetch-link! state/data)
   (start)
   (append-svg))

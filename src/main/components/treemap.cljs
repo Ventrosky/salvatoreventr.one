@@ -1,11 +1,12 @@
 (ns main.components.treemap
   (:require [main.state :as state]
             [cljsjs.d3]
-            [main.components.section :refer [section]]))
+            [main.components.section :refer [section]]
+            [ajax.core :refer [GET]]))
 
 (def margin {:top 10 :right 10 :bottom 10 :left 10})
-(def width (- 445 (:left margin) (:right margin)))
-(def height (- 445 (:top margin) (:bottom margin)))
+(def width (- 600 (:left margin) (:right margin)))
+(def height (- 600 (:top margin) (:bottom margin)))
 
 (defn content
   []
@@ -18,6 +19,43 @@
    "Project Activity"
    (content)))
 
+(defn fetch-link! [svg]
+  (GET "http://localhost:8055/treemap?name=Ventrosky"
+    {:handler (fn [data]
+                (let [root (-> js/d3
+                               (.hierarchy (.parse js/JSON data))
+                               (.sum #(.-value %)))]
+                  (do
+                    (reset! state/data data)
+                    ((-> js/d3
+                         (.treemap)
+                         (.size (clj->js [width height]))
+                         (.padding 2)) root)
+                    (-> svg
+                        (.selectAll "rect")
+                        (.data (.leaves root))
+                        (.enter)
+                        (.append "rect")
+                        (.attr "x" #(.-x0 %))
+                        (.attr "y" #(.-y0 %))
+                        (.attr "width" #(- (.-x1 %) (.-x0 %)))
+                        (.attr "height" #(- (.-y1 %) (.-y0 %)))
+                        (.attr "stroke" "black")
+                        (.attr "fill" "slateblue"))
+                    (-> svg
+                        (.selectAll "text")
+                        (.data (.leaves root))
+                        (.enter)
+                        (.append "text")
+                        (.attr "x" #(+ (.-x0 %) 5))
+                        (.attr "y" #(+ (.-y0 %) 20))
+                        (.text #(.-repo (.-data %)))
+                        (.attr "font-size" "15px")
+                        (.attr "fill" "white")))))
+     :error-handler (fn [{:keys [status status-text]}]
+                      (js/console.log status status-text))}))
+
+
 (defn append-svg []
   (let [svg (-> js/d3
                 (.select "#treemap")
@@ -25,38 +63,11 @@
                 (.attr "class" "center-block")
                 (.attr "height" height)
                 (.attr "width" width)
+                (.attr "id" "svg-treemap")
                 (.append "g")
                 (.attr "transform" (str "translate(" (:left margin) "," (:top margin) ")")))]
-    (-> js/d3
-        (.json "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_dendrogram_full.json"
-               (fn [data]
-                 (let [root (-> js/d3
-                                (.hierarchy data)
-                                (.sum #(.value %)))]
-                   (do 
-                     (js/console.log data)
-                     (-> js/d3
-                         (.treemap)
-                         (.size (clj->js [width height]))
-                         (.padding 2)
-                         root)
-                     (-> svg 
-                         (.selectAll "rect")
-                         (.data (.leaves root))
-                         (.enter)
-                         (.append "rect")
-                         (.attr "x" #(.x0 %))
-                         (.attr "y" #(.y0 %))
-                         (.attr "width" #(- (.x1 %) (.x0 %)))
-                         (.attr "height" #(- (.y1 %) (.y0 %)))
-                         (.attr "stroke" "black")
-                         (.attr "fill" "slateblue")))))))))
-;;      .attr('x', function (d) { return d.x0; })
-;;      .attr('y', function (d) { return d.y0; })
-;;      .attr('width', function (d) { return d.x1 - d.x0; })
-;;      .attr('height', function (d) { return d.y1 - d.y0; })
-;;      .style("stroke", "black")
-;;      .style("fill", "slateblue")
+    (fetch-link! svg)))
+
 ;;// read json data
 ;;d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_dendrogram_full.json", function(data) {
 ;;
@@ -95,11 +106,6 @@
 ;;      .attr("fill", "white")
 ;;})
 
-;;(defn render []
-;;  (set! (.-innerHTML (js/document.getElementById "treemap"))
-;;        "<h1>Hello Chestnut!</h1>"))
-
-
 (def options {:title {:subtext "Project activity"
                       :x "center"}
               :tooltip {:formatter "{b0}: {c0}"}
@@ -118,8 +124,3 @@
                                   :itemStyle {:normal {:borderColorSaturation 0.6
                                                        :gapWidth 1}}}
                                  {:colorSaturation [0.3 0.5]}]}]})
-
-;;(defn render-treemap []
-;;  (let [element   (js/document.getElementById "treemap")
-;;        the-chart (.init cljsjs.echarts element)]
-;;    (.setOption the-chart (clj->js options))))

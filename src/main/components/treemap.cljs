@@ -21,46 +21,58 @@
    (content)))
 
 (defn dot-text
-  [texts]
-  (map (fn [text]
-         (let [words (str/split text #"/\s+/")]
-           (js/console.log text)))
-       texts))
-
+  [text size]
+    (do 
+      (js/console.log text)
+      text))
+;;function trimText(text, threshold) {
+;;    if (text.length <= threshold) return text;
+;;    return text.substr(0, threshold).concat("...");
+;;}
 (defn fetch-link! [svg]
   (GET "http://localhost:8055/streemap?name=Ventrosky"
     {:handler (fn [data]
                 (let [root (-> js/d3
                                (.hierarchy (.parse js/JSON data))
-                               (.sum #(.-value %)))]
+                               (.sum #(.-value %)))
+                      grepo (-> svg
+                                (.selectAll "g")
+                                (.data (.leaves root))
+                                (.enter)
+                                (.append "g"))
+                      fader #((-> js/d3
+                                  (.interpolateRgb % "#fff"))
+                              0.2)
+                      color (-> js/d3
+                                (.scaleSequential)
+                                (.domain (clj->js [1 (reduce max (map #(.-value %) (.leaves root)))]))
+                                (.interpolator (js/d3.interpolateRgb (js/d3.rgb "#E1B9AB") (js/d3.rgb "#C77154"))))]
                   (do
                     (reset! state/data data)
                     ((-> js/d3
                          (.treemap)
                          (.size (clj->js [width height]))
                          (.padding 2)) root)
-                    (-> svg
-                        (.selectAll "rect")
-                        (.data (.leaves root))
-                        (.enter)
+                    (-> grepo
                         (.append "rect")
                         (.attr "x" #(.-x0 %))
                         (.attr "y" #(.-y0 %))
                         (.attr "width" #(- (.-x1 %) (.-x0 %)))
                         (.attr "height" #(- (.-y1 %) (.-y0 %)))
                         (.attr "stroke" "#989898")
-                        (.attr "fill" "#BD5532"))
-                    (-> svg
-                        (.selectAll "text")
-                        (.data (.leaves root))
-                        (.enter)
+                        (.attr "fill" #(do
+                                         (js/console.log (color 100)) 
+                                         (color (.-value %)))))
+                    (-> grepo
                         (.append "text")
-                        (.attr "x" #(+ (.-x0 %) 5))
-                        (.attr "y" #(+ (.-y0 %) 20))
-                        (.text #(.-name (.-data %)));repo
-                        (.attr "font-size" "15px")
+                        (.attr "x" #(+ (.-x0 %) 2))
+                        (.attr "y" #(+ (.-y0 %) 12))
+                        (.text #(.-name (.-data %)))
+                        (.attr "font-size" "0.75em")
+                        (.attr "width" #(- (.-x1 %) (.-x0 %)))
                         (.attr "fill" "white")
-                        (.call dot-text)))))
+                        (.attr "class" "truncate")))))
+     
      :error-handler (fn [{:keys [status status-text]}]
                       (js/console.log status status-text))}))
 
@@ -75,44 +87,6 @@
                 (.append "g")
                 (.attr "transform" (str "translate(0,0)")))] ;" (:left margin) "," (:top margin) "
     (fetch-link! svg)))
-
-;;// read json data
-;;d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_dendrogram_full.json", function(data) {
-;;
-;;  // Give the data to this cluster layout:
-;;  var root = d3.hierarchy(data).sum(function(d){ return d.value}) // Here the size of each leave is given in the 'value' field in input data
-;;
-;;  // Then d3.treemap computes the position of each element of the hierarchy
-;;  d3.treemap()
-;;    .size([width, height])
-;;    .padding(2)
-;;    (root)
-;;
-;;  // use this information to add rectangles:
-;;  svg
-;;    .selectAll("rect")
-;;    .data(root.leaves())
-;;    .enter()
-;;    .append("rect")
-;;      .attr('x', function (d) { return d.x0; })
-;;      .attr('y', function (d) { return d.y0; })
-;;      .attr('width', function (d) { return d.x1 - d.x0; })
-;;      .attr('height', function (d) { return d.y1 - d.y0; })
-;;      .style("stroke", "black")
-;;      .style("fill", "slateblue")
-;;
-;;  // and to add the text labels
-;;  svg
-;;    .selectAll("text")
-;;    .data(root.leaves())
-;;    .enter()
-;;    .append("text")
-;;      .attr("x", function(d){ return d.x0+5})    // +10 to adjust position (more right)
-;;      .attr("y", function(d){ return d.y0+20})    // +20 to adjust position (lower)
-;;      .text(function(d){ return d.data.name })
-;;      .attr("font-size", "15px")
-;;      .attr("fill", "white")
-;;})
 
 (def options {:title {:subtext "Project activity"
                       :x "center"}

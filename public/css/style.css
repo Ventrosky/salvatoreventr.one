@@ -568,4 +568,22 @@ button:focus,
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
+    pointer-events: none;
+}
+g{
+    z-index:900;
+}
+#treemap {
+    padding-bottom: 2em;
+}
+
+.tooltip{
+    background-color: #444444;
+    color: #fff;
+    text-align: center;
+    padding: 5px;
+    border:solid;
+    border-radius: 6px;
+    border-width: 2px;
+    position: absolute;
+}

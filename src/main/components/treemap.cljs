@@ -17,24 +17,34 @@
   []
   (section
    "treemap-section"
-   "Projects Activity"
+   "Recent Activities"
    (content)))
 
-(defn dot-text
-  [text size]
-    (do 
-      (js/console.log text)
-      text))
-;;function trimText(text, threshold) {
-;;    if (text.length <= threshold) return text;
-;;    return text.substr(0, threshold).concat("...");
-;;}
 (defn fetch-link! [svg]
   (GET "http://localhost:8055/streemap?name=Ventrosky"
     {:handler (fn [data]
                 (let [root (-> js/d3
                                (.hierarchy (.parse js/JSON data))
                                (.sum #(.-value %)))
+                      tooltip (-> js/d3
+                                  (.select "#treemap")
+                                  (.append "div")
+                                  (.attr "opacity" 0)
+                                  (.attr "class" "tooltip"))
+                      mouseover #(-> tooltip
+                                     (.style "opacity" 1))
+                      mousemove (fn [e] 
+                                  (this-as this
+                                           (let [evts (reduce
+                                                       #(str %1 "<br>" (str/replace (first %2) #"Event$" "") ": " (second %2))
+                                                       ""
+                                                       (js->clj (.-evts (.-data e))))]
+                                             (-> tooltip
+                                                 (.html (str (.-name (.-data e)) evts))
+                                                 (.style "left"  (str (+ (first (js/d3.mouse this)) 70) "px"))
+                                                 (.style "top" (str (second (js/d3.mouse this)) "px"))))))
+                      mouseleave #(-> tooltip
+                                      (.style "opacity" 0))
                       grepo (-> svg
                                 (.selectAll "g")
                                 (.data (.leaves root))
@@ -45,8 +55,12 @@
                               0.2)
                       color (-> js/d3
                                 (.scaleSequential)
-                                (.domain (clj->js [1 (reduce max (map #(.-value %) (.leaves root)))]))
-                                (.interpolator (js/d3.interpolateRgb (js/d3.rgb "#E1B9AB") (js/d3.rgb "#C77154"))))]
+                                (.domain (clj->js [1 (reduce max
+                                                             (map #(.-value %)
+                                                                  (.leaves root)))]))
+                                (.interpolator (js/d3.interpolateRgb
+                                                (js/d3.rgb "#8DB255")
+                                                (js/d3.rgb "#006442"))))]
                   (do
                     (reset! state/data data)
                     ((-> js/d3
@@ -60,9 +74,15 @@
                         (.attr "width" #(- (.-x1 %) (.-x0 %)))
                         (.attr "height" #(- (.-y1 %) (.-y0 %)))
                         (.attr "stroke" "#989898")
-                        (.attr "fill" #(do
-                                         (js/console.log (color 100)) 
-                                         (color (.-value %)))))
+                        (.attr "cursor" "pointer")
+                        (.on "click" (fn [e]
+                                       (js/window.open
+                                        (.-url (.-data e))
+                                        "_blank")))
+                        (.on "mouseover" mouseover)
+                        (.on "mousemove" mousemove)
+                        (.on "mouseleave" mouseleave)
+                        (.attr "fill" #(color (.-value %))))
                     (-> grepo
                         (.append "text")
                         (.attr "x" #(+ (.-x0 %) 2))
@@ -72,20 +92,18 @@
                         (.attr "width" #(- (.-x1 %) (.-x0 %)))
                         (.attr "fill" "white")
                         (.attr "class" "truncate")))))
-     
      :error-handler (fn [{:keys [status status-text]}]
                       (js/console.log status status-text))}))
-
 
 (defn append-svg []
   (let [svg (-> js/d3
                 (.select "#treemap")
                 (.append "svg")
                 (.attr "class" "center-block")
-                (.attr "viewBox" (clj->js [0 0 width height]));(.attr "height" height);(.attr "width" width)
+                (.attr "viewBox" (clj->js [0 0 width height]))
                 (.attr "id" "svg-treemap")
                 (.append "g")
-                (.attr "transform" (str "translate(0,0)")))] ;" (:left margin) "," (:top margin) "
+                (.attr "transform" (str "translate(0,0)")))]
     (fetch-link! svg)))
 
 (def options {:title {:subtext "Project activity"

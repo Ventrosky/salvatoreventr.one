@@ -29,7 +29,7 @@
                       tooltip (-> js/d3
                                   (.select "#treemap")
                                   (.append "div")
-                                  (.attr "opacity" 0)
+                                  (.style "opacity" 0)
                                   (.attr "class" "tooltip"))
                       mouseover #(-> tooltip
                                      (.style "opacity" 1))
@@ -39,12 +39,22 @@
                                                        #(str %1 "<br>" (str/replace (first %2) #"Event$" "") ": " (second %2))
                                                        ""
                                                        (js->clj (.-evts (.-data e))))]
+                                             (do 
+                                               ;
+                                               (-> js/d3
+                                                   (.select this)
+                                                   (.style "stroke" "#006800"));none
+                                               (-> tooltip
+                                                   (.html (str (.-name (.-data e)) evts))
+                                                   (.style "left"  (str (+ (first (js/d3.mouse this)) 70) "px"))
+                                                   (.style "top" (str (second (js/d3.mouse this)) "px")))))))
+                      mouseleave #(this-as this
+                                           (do 
                                              (-> tooltip
-                                                 (.html (str (.-name (.-data e)) evts))
-                                                 (.style "left"  (str (+ (first (js/d3.mouse this)) 70) "px"))
-                                                 (.style "top" (str (second (js/d3.mouse this)) "px"))))))
-                      mouseleave #(-> tooltip
-                                      (.style "opacity" 0))
+                                                 (.style "opacity" 0))
+                                             (-> js/d3
+                                                 (.select this)
+                                                 (.style "stroke" "#989898"))))
                       grepo (-> svg
                                 (.selectAll "g")
                                 (.data (.leaves root))

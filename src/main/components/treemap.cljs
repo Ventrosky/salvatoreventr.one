@@ -2,11 +2,12 @@
   (:require [main.state :as state]
             [cljsjs.d3]
             [main.components.section :refer [section]]
-            [ajax.core :refer [GET]]))
+            [ajax.core :refer [GET]]
+            [clojure.string :as str]))
 
 (def margin {:top 10 :right 10 :bottom 10 :left 10})
-(def width (- 600 (:left margin) (:right margin)))
-(def height (- 600 (:top margin) (:bottom margin)))
+(def width (- 450 (:left margin) (:right margin)))
+(def height (- 450 (:top margin) (:bottom margin)))
 
 (defn content
   []
@@ -16,11 +17,18 @@
   []
   (section
    "treemap-section"
-   "Project Activity"
+   "Projects Activity"
    (content)))
 
+(defn dot-text
+  [texts]
+  (map (fn [text]
+         (let [words (str/split text #"/\s+/")]
+           (js/console.log text)))
+       texts))
+
 (defn fetch-link! [svg]
-  (GET "http://localhost:8055/treemap?name=Ventrosky"
+  (GET "http://localhost:8055/streemap?name=Ventrosky"
     {:handler (fn [data]
                 (let [root (-> js/d3
                                (.hierarchy (.parse js/JSON data))
@@ -40,8 +48,8 @@
                         (.attr "y" #(.-y0 %))
                         (.attr "width" #(- (.-x1 %) (.-x0 %)))
                         (.attr "height" #(- (.-y1 %) (.-y0 %)))
-                        (.attr "stroke" "black")
-                        (.attr "fill" "slateblue"))
+                        (.attr "stroke" "#989898")
+                        (.attr "fill" "#BD5532"))
                     (-> svg
                         (.selectAll "text")
                         (.data (.leaves root))
@@ -49,9 +57,10 @@
                         (.append "text")
                         (.attr "x" #(+ (.-x0 %) 5))
                         (.attr "y" #(+ (.-y0 %) 20))
-                        (.text #(.-repo (.-data %)))
+                        (.text #(.-name (.-data %)));repo
                         (.attr "font-size" "15px")
-                        (.attr "fill" "white")))))
+                        (.attr "fill" "white")
+                        (.call dot-text)))))
      :error-handler (fn [{:keys [status status-text]}]
                       (js/console.log status status-text))}))
 
@@ -61,11 +70,10 @@
                 (.select "#treemap")
                 (.append "svg")
                 (.attr "class" "center-block")
-                (.attr "height" height)
-                (.attr "width" width)
+                (.attr "viewBox" (clj->js [0 0 width height]));(.attr "height" height);(.attr "width" width)
                 (.attr "id" "svg-treemap")
                 (.append "g")
-                (.attr "transform" (str "translate(" (:left margin) "," (:top margin) ")")))]
+                (.attr "transform" (str "translate(0,0)")))] ;" (:left margin) "," (:top margin) "
     (fetch-link! svg)))
 
 ;;// read json data

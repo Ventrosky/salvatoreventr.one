@@ -586,4 +586,5 @@ g{
     border-radius: 6px;
     border-width: 2px;
     position: absolute;
+    pointer-events: none;
 }

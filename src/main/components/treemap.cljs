@@ -54,16 +54,25 @@
                                            (let [evts (reduce
                                                        #(str %1 "<br>" (str/replace (first %2) #"Event$" "") ": " (second %2))
                                                        ""
-                                                       (js->clj (.-evts (.-data e))))]
+                                                       (js->clj (.-evts (.-data e))))
+                                                 x1 (first (js/d3.mouse this))
+                                                 y1 (second (js/d3.mouse this))
+                                                 bounds (-> js/document
+                                                            (.getElementById "treemap")
+                                                            (.getBoundingClientRect))
+                                                 x2 (#(* (/ % width) (.-width bounds)) x1)
+                                                 y2 (#(* (/ % height) (.-height bounds)) y1)]
                                              (do 
-                                               ;
+                                               (js/console.log x2 y2)
                                                (-> js/d3
                                                    (.select this)
                                                    (.style "stroke" "#006800"));none
                                                (-> tooltip
-                                                   (.html (str (.-name (.-data e)) evts))
-                                                   (.style "left"  (str (+ (first (js/d3.mouse this)) 70) "px"))
-                                                   (.style "top" (str (second (js/d3.mouse this)) "px")))))))
+                                                   (.html (str "<span id=""repo"">" (.-name (.-data e)) "</span>" evts))
+                                                   (.style "left" (str (if (> x1 (/ width 2))
+                                                                         (- x2 190)
+                                                                         (+ x2 60)) "px"))
+                                                   (.style "top" (str (- y2 80) "px")))))))
                       mouseleave #(this-as this
                                            (do 
                                              (-> tooltip

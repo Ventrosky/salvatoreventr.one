@@ -579,10 +579,11 @@ g{
 }
 
 .tooltip{
-    background-color: #f8f8f8;
-    color: #7e7c7c;
+    background-color: #444444;
+    color: #dddddd;
     text-align: center;
-    border:solid #555;
+    border: solid #333;
+    text-align: center;
     border-radius: 6px;
     border-width: 1px;
     position: absolute;
@@ -591,7 +592,8 @@ g{
     padding: 1em;
 }
 #repo{
-    color: #bd5532;
+    color: #ce5f3b;
+    font-size: 1.2em;
 }
 #gitload{
     display: table;

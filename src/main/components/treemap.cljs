@@ -29,7 +29,7 @@
    (content)))
 
 (defn fetch-link! []
-  (GET "http://localhost:8055/streemap?name=Ventrosky"
+  (GET "https://observant-mouth.glitch.me/streemap?name=Ventrosky"
     {:handler (fn [data]
                 (let [svg (-> js/d3
                               (.select "#treemap")
@@ -65,7 +65,7 @@
                                              (do 
                                                (-> js/d3
                                                    (.select this)
-                                                   (.style "stroke" "#006800"));none
+                                                   (.style "stroke" "#006800"))
                                                (-> tooltip
                                                    (.html (str "<span id=""repo"">" (.-name (.-data e)) "</span>" evts))
                                                    (.style "left" (str (if (> x1 (/ width 2))

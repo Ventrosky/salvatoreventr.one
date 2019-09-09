@@ -63,7 +63,6 @@
                                                  x2 (#(* (/ % width) (.-width bounds)) x1)
                                                  y2 (#(* (/ % height) (.-height bounds)) y1)]
                                              (do 
-                                               (js/console.log x2 y2)
                                                (-> js/d3
                                                    (.select this)
                                                    (.style "stroke" "#006800"));none
@@ -132,7 +131,7 @@
      :error-handler (fn [{:keys [status status-text]}]
                       (do
                         (js/setTimeout #(fetch-link!) 5000)
-                        (throw (js/Error. "Error while fetching GitHub Activity!"))))}))
+                        (js/console.log "Error while fetching GitHub Activity! Retrying in 5 seconds...")))}))
 
 (defn append-svg []
   (let []

@@ -9,9 +9,17 @@
 (def width (- 450 (:left margin) (:right margin)))
 (def height (- 450 (:top margin) (:bottom margin)))
 
+(defn loading
+  []
+  [:div {:id "gitload" :class (when (not @state/load) "invisibile")}
+   [:div.loader]
+   [:p.text-center.loadtxt "Loading..."]])
+
 (defn content
   []
-  [:div {:id "treemap"}])
+  [:div
+   (loading)
+   [:div {:id "treemap"}]])
 
 (defn treemap
   []
@@ -20,10 +28,18 @@
    "Recent Activities"
    (content)))
 
-(defn fetch-link! [svg]
+(defn fetch-link! []
   (GET "http://localhost:8055/streemap?name=Ventrosky"
     {:handler (fn [data]
-                (let [root (-> js/d3
+                (let [svg (-> js/d3
+                              (.select "#treemap")
+                              (.append "svg")
+                              (.attr "class" "center-block")
+                              (.attr "viewBox" (clj->js [0 0 width height]))
+                              (.attr "id" "svg-treemap")
+                              (.append "g")
+                              (.attr "transform" (str "translate(0,0)")))
+                      root (-> js/d3
                                (.hierarchy (.parse js/JSON data))
                                (.sum #(.-value %)))
                       tooltip (-> js/d3
@@ -73,6 +89,7 @@
                                                 (js/d3.rgb "#006442"))))]
                   (do
                     (reset! state/data data)
+                    (reset! state/load false)
                     ((-> js/d3
                          (.treemap)
                          (.size (clj->js [width height]))
@@ -101,20 +118,20 @@
                         (.attr "font-size" "0.48em")
                         (.attr "width" #(- (.-x1 %) (.-x0 %)))
                         (.attr "fill" "white")
-                        (.attr "class" "truncate")))))
+                        (.attr "class" "truncate")))
+                  true))
      :error-handler (fn [{:keys [status status-text]}]
-                      (js/console.log status status-text))}))
+                      (do
+                        (js/setTimeout #(fetch-link!) 5000)
+                        (throw (js/Error. "Error while fetching GitHub Activity!"))))}))
 
 (defn append-svg []
-  (let [svg (-> js/d3
-                (.select "#treemap")
-                (.append "svg")
-                (.attr "class" "center-block")
-                (.attr "viewBox" (clj->js [0 0 width height]))
-                (.attr "id" "svg-treemap")
-                (.append "g")
-                (.attr "transform" (str "translate(0,0)")))]
-    (fetch-link! svg)))
+  (let []
+    (try
+      (fetch-link!)
+      (catch :default e
+        (println e)
+        false))))
 
 (def options {:title {:subtext "Project activity"
                       :x "center"}

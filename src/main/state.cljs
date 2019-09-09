@@ -156,4 +156,6 @@
                                  :link "https://www.freecodecamp.org/ventrosky/front-end-certification"
                                  :source "FreeCodeCamp"}}))
 
-(def data (r/atom {}))
+(def data (r/atom nil))
+
+(def load (r/atom {:fetching true}))

@@ -564,6 +564,7 @@ button:focus,
 /* ---------------------------------------------- /*
  * treemap
 /* ---------------------------------------------- */
+
 .truncate {
     white-space: nowrap;
     overflow: hidden;
@@ -587,4 +588,34 @@ g{
     border-width: 2px;
     position: absolute;
     pointer-events: none;
+}
+
+#gitload{
+    display: table;
+    margin: 0 auto;
+}
+
+.loader {
+    border: 16px solid #E1DFDF; /* Light grey */
+    border-top: 16px solid #BD5532; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+.loadtxt{
+    text-align:center; 
+    vertical-align: middle;
+    display: table-cell;
+    padding-left: 20px;
+}
+
+.invisibile{
+    display: none !important;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

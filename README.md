@@ -1,5 +1,5 @@
 # salvatoreventr.one
-Personal SPA Resume, Built wit Reagent.
+Personal SPA Resume, Built with Reagent.
 
 [Check it out!](https://salvatoreventr.one/)
 

@@ -140,22 +140,3 @@
       (catch :default e
         (println e)
         false))))
-
-(def options {:title {:subtext "Project activity"
-                      :x "center"}
-              :tooltip {:formatter "{b0}: {c0}"}
-              :series [{:name "ALL"
-                        :right "20%"
-                        :type "treemap"
-                        :data @state/data
-                        :levels [{:itemStyle {:normal {:borderColor "#555"
-                                                       :borderWidth 4
-                                                       :gapWidth 4}}}
-                                 {:colorSaturation [0.3 0.6]
-                                  :itemStyle {:normal {:borderColorSaturation 0.7
-                                                       :gapWidth 2
-                                                       :borderWidth 2}}}
-                                 {:colorSaturation [0.3 0.5]
-                                  :itemStyle {:normal {:borderColorSaturation 0.6
-                                                       :gapWidth 1}}}
-                                 {:colorSaturation [0.3 0.5]}]}]})

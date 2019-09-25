@@ -54,7 +54,7 @@
                                            (let [evts (reduce
                                                        #(str %1 "<br>" (str/replace (first %2) #"Event$" "") ": " (second %2))
                                                        ""
-                                                       (js->clj (.-evts (.-data e))))
+                                                       ((js->clj (.-data e)) "evts"))
                                                  x1 (first (js/d3.mouse this))
                                                  y1 (second (js/d3.mouse this))
                                                  bounds (-> js/document
@@ -62,12 +62,12 @@
                                                             (.getBoundingClientRect))
                                                  x2 (#(* (/ % width) (.-width bounds)) x1)
                                                  y2 (#(* (/ % height) (.-height bounds)) y1)]
-                                             (do 
+                                             (do
                                                (-> js/d3
                                                    (.select this)
                                                    (.style "stroke" "#006800"))
                                                (-> tooltip
-                                                   (.html (str "<span id=""repo"">" (.-name (.-data e)) "</span>" evts))
+                                                   (.html (str "<span id=" "repo" ">" (.-name (.-data e)) "</span>" evts))
                                                    (.style "left" (str (if (> x1 (/ width 2))
                                                                          (- x2 190)
                                                                          (+ x2 60)) "px"))

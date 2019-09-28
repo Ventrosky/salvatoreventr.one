@@ -29,7 +29,7 @@
    (content)))
 
 (defn fetch-link! []
-  (GET "https://observant-mouth.glitch.me/streemap?name=Ventrosky"
+  (GET "https://sleepy-chamber-33613.herokuapp.com/streemap?name=Ventrosky";"https://observant-mouth.glitch.me/streemap?name=Ventrosky"
     {:handler (fn [data]
                 (let [svg (-> js/d3
                               (.select "#treemap")

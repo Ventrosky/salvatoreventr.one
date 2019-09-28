@@ -10,7 +10,11 @@
             [main.components.footer :refer [footer]]
             [main.components.treemap :refer [treemap append-svg]]
             [main.state :as state]))
-            
+
+(defn not-mobile
+  []
+  (nil? (re-find #"(?i)(iphone|ipod|ipad|android|blackberry|opera mini|opera mobi|skyfire|maemo|windows phone|palm|iemobile|symbian|symbianos|fennec)" (clojure.string/lower-case (.-userAgent js/navigator)))))
+
 (defn app
   []
   [:div
@@ -23,7 +27,7 @@
    [certificates]
    [experience "Community Service" 4 (vals @state/extra)]
    [portfolio]
-   [treemap]
+   [treemap];(when (not-mobile) [treemap])
    [contacts]
    [footer]])
 
@@ -36,4 +40,4 @@
 (defn ^:export main
   []
   (start)
-  (append-svg))
+  (append-svg));(when (not-mobile) (append-svg))

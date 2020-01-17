@@ -49,23 +49,27 @@
                    :design {:title "Design Tools"
                             :skill ["Gimp/Photoshop" "Inkscape/Illustrator"]}}))
 
-(def experience (r/atom {:insurance {:date "2018 - Present"
+(def experience (r/atom {:toisrl {:date "Nov 2019 - Jan 2020"
+                                  :position "Freelance Software Engineer"
+                                  :company "TOI - Things On Internet"
+                                  :city "Pisa (PI), Italy"}
+                         :insurance {:date "May 2018 - Dec 2019"
                                      :position "Software Engineer"
                                      :company "Insurance Online S.p.A."
                                      :city "Montacchiello (PI), Italy"}
-                         :tutor {:date "2015 - 2018"
+                         :tutor {:date "Oct 2015 - Sep 2018"
                                  :position "Private Tutor"
                                  :company "Self-Employed"
                                  :city "Pisa (PI), Italy"}
-                         :designer {:date "2014 - 2015"
-                                    :position "Graphic Designer"
+                         :designer {:date "Oct 2014 - Jun 2015"
+                                    :position "Freelance Graphic Designer"
                                     :company "Piemme Pharmatech Italia S.r.l."
                                     :city "Civita Castellana (VT), Italy"}
-                         :support {:date "2010 - 2012"
+                         :support {:date "Jan 2010 - Dec 2012"
                                    :position "IT Support"
                                    :company "A&G Distribuzione"
                                    :city "Viterbo (VT), Italy"}
-                         :busboy {:date "2009 - 2010"
+                         :busboy {:date "Oct 2009 - Aug 2010"
                                   :position "Bus Boy"
                                   :company "Benihana Chelsea restaurant"
                                   :city "London, United Kingdom"}}))

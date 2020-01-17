@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "shadow": "shadow-cljs watch app",
-    "release":"shadow-cljs release app"
+    "release": "shadow-cljs release app",
+    "gh-pages":"push-dir --dir=public --branch=gh-pages"
   },
   "devDependencies": {
     "shadow-cljs": "2.8.39"
@@ -12,6 +13,7 @@
   "dependencies": {
     "create-react-class": "^15.6.3",
     "d3": "^5.11.0",
+    "push-dir": "^0.4.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   }

@@ -49,12 +49,16 @@
                    :design {:title "Design Tools"
                             :skill ["Gimp/Photoshop" "Inkscape/Illustrator"]}}))
 
-(def experience (r/atom {:toisrl {:date "Nov 2019 - Jan 2020"
-                                  :position "Freelance Software Engineer"
+(def experience (r/atom {:develer {:date "Feb 2019 - Present"
+                                  :position "Software Developer"
+                                  :company "Develer"
+                                  :city "Campi Bisenzio (FI), Italy"}
+                         :toisrl {:date "Nov 2019 - Jan 2020"
+                                  :position "Freelance Software Developer"
                                   :company "TOI - Things On Internet"
                                   :city "Pisa (PI), Italy"}
                          :insurance {:date "May 2018 - Dec 2019"
-                                     :position "Software Engineer"
+                                     :position "Software Developer"
                                      :company "Insurance Online S.p.A."
                                      :city "Montacchiello (PI), Italy"}
                          :tutor {:date "Oct 2015 - Sep 2018"

@@ -5,7 +5,7 @@
   "scripts": {
     "shadow": "shadow-cljs watch app",
     "release": "shadow-cljs release app",
-    "gh-pages":"push-dir --dir=public --branch=gh-pages"
+    "gh-pages": "push-dir --dir=public --branch=gh-pages"
   },
   "devDependencies": {
     "shadow-cljs": "2.8.39"

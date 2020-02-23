@@ -139,11 +139,15 @@
                               :title "oop-projects"
                               :desc "Java and Visual Basic projects."}}))
 
-(def certificate (r/atom {:apis {:date "2019 August"
+(def certificate (r/atom {:gola {:date "2020 February"
+                                 :title "Go Programming Spec"
+                                 :link "https://www.coursera.org/account/accomplishments/specialization/GW2JGP2HSLX6"
+                                 :source "Coursera"}
+                          :apis {:date "2019 August"
                                  :title "APIs and Microservices"
                                  :link "https://www.freecodecamp.org/certification/ventrosky/apis-and-microservices"
                                  :source "FreeCodeCamp"}
-						  :libs {:date "2019 March"
+                          :libs {:date "2019 March"
                                  :title "Front End Libraries"
                                  :link "https://www.freecodecamp.org/certification/ventrosky/front-end-libraries"
                                  :source "FreeCodeCamp"}

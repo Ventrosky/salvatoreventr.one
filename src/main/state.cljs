@@ -29,25 +29,20 @@
 (def working (r/atom {:language {:title "Programming Language"
                                  :skill ["JavaScript" "Go" "Python" "VB.NET"]}
                       :database {:title "Database"
-                                 :skill ["Oracle" "MySQL"]}
+                                 :skill ["PostgreSQL" "Oracle" "GraphQL"]}
+                      :framework {:title "Framework / Tools"
+                                  :skill ["NodeJS" "ReactJS" "Socket.io" "Rasa Stack"]}
                       :markup {:title "Markup Language"
-                               :skill ["HTML5/CSS" "XML/XSL"]}
-                      :framework {:title "Framework"
-                                  :skill ["NodeJS" "ReactJS" "Socket.io" "Rasa Stack" "NLTK" "Flask" "Reagent"]}
-                      
-                      :OS {:title "OS"
-                           :skill ["GNU/Linux" "Windows"]}}))
+                               :skill ["HTML5/CSS" "XML/XSL"]}}))
 
 (def base (r/atom {:language {:title "Programming Language"
                               :skill ["Java" "C" "C#" "Clojure"]}
                    :database {:title "Database"
-                              :skill ["PostgreSQL" "MongoDB" "Neo4J"]}
-                   :framework {:title "Framework"
-                               :skill ["D3JS" "AndroidSDK"]}
+                              :skill [ "MySQL" "MongoDB" "Neo4J"]}
+                   :framework {:title "Framework / Tools"
+                               :skill ["D3JS" "Flask" "NLTK" "Reagent"]}
                    :markup {:title "Markup Language"
-                            :skill ["Latex" "Markdown"]}
-                   :design {:title "Design Tools"
-                            :skill ["Gimp/Photoshop" "Inkscape/Illustrator"]}}))
+                            :skill ["Latex" "Markdown"]}}))
 
 (def experience (r/atom {:develer {:date "Feb 2019 - Present"
                                   :position "Software Developer"
@@ -152,7 +147,7 @@
                                  :link "https://www.freecodecamp.org/certification/ventrosky/front-end-libraries"
                                  :source "FreeCodeCamp"}
                           :algo {:date "2019 February"
-                                 :title "JS Algo and Data Structures"
+                                 :title "JavaScript DSA"
                                  :link "https://www.freecodecamp.org/certification/ventrosky/javascript-algorithms-and-data-structures"
                                  :source "FreeCodeCamp"} 
                           :resp {:date "2019 February"

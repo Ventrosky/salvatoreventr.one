@@ -4,9 +4,9 @@
 
 (defn content 
   [skillset]
-  [:div.row
+  [:div.skills-row
    (for [{:keys [title skill]}  skillset]
-     [:div.col-md-6 {:key title}
+     [:div.item {:key title}
       [:div.expertise-item
        [:h3 title]
        (map (fn [name]

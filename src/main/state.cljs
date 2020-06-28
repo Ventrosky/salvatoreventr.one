@@ -27,7 +27,7 @@
                                 :desc "Work with students of various ages and different learning levels, explaining complex informatics concepts in simple terms."}}))
 
 (def working (r/atom {:language {:title "Programming Language"
-                                 :skill ["Python" "JavaScript" "Bash" "VB.NET" "Clojure"]}
+                                 :skill ["JavaScript" "Go" "Python" "VB.NET"]}
                       :database {:title "Database"
                                  :skill ["Oracle" "MySQL"]}
                       :markup {:title "Markup Language"
@@ -39,7 +39,7 @@
                            :skill ["GNU/Linux" "Windows"]}}))
 
 (def base (r/atom {:language {:title "Programming Language"
-                              :skill ["Java" "C" "C#"]}
+                              :skill ["Java" "C" "C#" "Clojure"]}
                    :database {:title "Database"
                               :skill ["PostgreSQL" "MongoDB" "Neo4J"]}
                    :framework {:title "Framework"
